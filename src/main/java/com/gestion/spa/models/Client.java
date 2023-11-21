@@ -3,6 +3,7 @@ package com.gestion.spa.models;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -23,6 +24,9 @@ public class Client implements Serializable {
     @Size(min = 3,message = "client name is too small")
     private String name;
     private String randomized;
+    @Size(min = 9, message = "Phone number should be at least 9 digits")
+    @Nullable
+    private String phone;
     @OneToMany(mappedBy = "client",cascade = CascadeType.DETACH)
     private List<Product> productList;
     @JsonManagedReference(value = "product-client")

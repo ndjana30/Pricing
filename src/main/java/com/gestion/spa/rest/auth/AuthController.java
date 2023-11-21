@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/auth")
@@ -132,9 +133,18 @@ public Boolean getCurrentUser()
     {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication.getName();
+    }
 
-
-
+    @GetMapping("/{id}/delete")
+    public ResponseEntity<String> deleteUser(@PathVariable Long id)
+    {
+        Optional<UserEntity> user = userRepository.findById(id);
+       if (user.isPresent())
+       {
+           userRepository.deleteById(id);
+           return new ResponseEntity<>("User deleted",HttpStatus.OK);
+       }
+        return new ResponseEntity<>("User not found",HttpStatus.BAD_REQUEST);
     }
 
 
