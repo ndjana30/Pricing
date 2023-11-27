@@ -95,7 +95,7 @@ public Boolean getCurrentUser()
         writer.ExportUsers(users,"users.csv");
         return new ResponseEntity<>("ALL USERS FOUND AND ADDED IN CSV FILE",HttpStatus.OK);
     }
-    @GetMapping("users/see/all")
+    @GetMapping("clients/see/all")
     public ResponseEntity<List<Client>> seeAllClients() throws IOException {
         List<Client> client = clientRepository.findAll();
         return new ResponseEntity<>(client,HttpStatus.OK);
