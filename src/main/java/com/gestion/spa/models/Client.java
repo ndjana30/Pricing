@@ -27,6 +27,8 @@ public class Client implements Serializable {
     @Size(min = 9, message = "Phone number should be at least 9 digits")
     @Nullable
     private String phone;
+    @Nullable
+    private String address;
     @OneToMany(mappedBy = "client",cascade = CascadeType.DETACH)
     private List<Product> productList;
     @JsonManagedReference(value = "product-client")

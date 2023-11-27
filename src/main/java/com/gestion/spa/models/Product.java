@@ -22,9 +22,6 @@ public class Product {
     @GeneratedValue
     private long id;
     private String name;
-    @Enumerated(EnumType.STRING)
-    private Type type;
-    @Nullable
     private double cost;
     @ManyToOne
     @JoinColumn(name = "employee_id",insertable = false,updatable = false)

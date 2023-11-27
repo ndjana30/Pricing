@@ -3,9 +3,12 @@ package com.gestion.spa.models;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
+import java.util.Date;
 
 @Table(name="Item")
 @Entity
@@ -19,18 +22,23 @@ public class Item {
     private String name;
     @Enumerated(EnumType.STRING)
     private Category category;
-
+    @Nullable
+    private Integer minQty;
+    @Nullable
+    private LocalDate expiryDate;
     private String brand;
     @ManyToOne
     @JoinColumn(name = "stock_id",insertable = false,updatable = false)
     private Stock stock;
     private long stock_id;
 
-    public Item(String name, Category category, String brand, long stock_id) {
+    public Item(String name, Category category, String brand, long stock_id, int minQty, LocalDate expiryDate) {
         this.name = name;
         this.category = category;
         this.brand = brand;
         this.stock_id = stock_id;
+        this.minQty=minQty;
+        this.expiryDate=expiryDate;
     }
 
     @JsonBackReference(value = "stock-item")

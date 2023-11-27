@@ -4,8 +4,10 @@ package com.gestion.spa.rest.auth;
 import com.gestion.spa.dto.AuthResponseDto;
 import com.gestion.spa.dto.LoginDto;
 import com.gestion.spa.dto.RegisterDto;
+import com.gestion.spa.models.Client;
 import com.gestion.spa.models.Role;
 import com.gestion.spa.models.UserEntity;
+import com.gestion.spa.repositories.ClientRepository;
 import com.gestion.spa.repositories.RoleRepository;
 import com.gestion.spa.repositories.UserRepository;
 import com.gestion.spa.rest.controllers.UserWriter;
@@ -35,15 +37,16 @@ public class AuthController {
     private RoleRepository roleRepository;
     private PasswordEncoder passwordEncoder;
     private JWTGenerator jwtGenerator;
-
+    private ClientRepository clientRepository;
 
     @Autowired
-    public AuthController(AuthenticationManager authenticationManager, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, JWTGenerator jwtGenerator) {
+    public AuthController(AuthenticationManager authenticationManager, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, JWTGenerator jwtGenerator,ClientRepository clientRepository) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtGenerator = jwtGenerator;
+        this.clientRepository = clientRepository;
     }
 
     @PostMapping("employee/login")
@@ -92,6 +95,11 @@ public Boolean getCurrentUser()
         writer.ExportUsers(users,"users.csv");
         return new ResponseEntity<>("ALL USERS FOUND AND ADDED IN CSV FILE",HttpStatus.OK);
     }
+    @GetMapping("users/see/all")
+    public ResponseEntity<List<Client>> seeAllClients() throws IOException {
+        List<Client> client = clientRepository.findAll();
+        return new ResponseEntity<>(client,HttpStatus.OK);
+    }
     @PostMapping("employee/register")
     public ResponseEntity<String> register(@RequestBody RegisterDto registerDto)
     {
@@ -102,7 +110,6 @@ public Boolean getCurrentUser()
         UserEntity user = new UserEntity();
         user.setUsername(registerDto.getUsername());
         user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
-
         Role roles= roleRepository.findByName("EMPLOYEE").get();
         user.setRoles(Collections.singletonList(roles));
         userRepository.save(user);
@@ -126,6 +133,24 @@ public Boolean getCurrentUser()
         userRepository.save(user);
 
         return new ResponseEntity<>("User registered success with Cashier",
+                HttpStatus.OK);
+    }
+    @PostMapping("manager/register")
+    public ResponseEntity<String> managerRegister(@RequestBody RegisterDto registerDto)
+    {
+        if(userRepository.existsByUsername(registerDto.getUsername()))
+        {
+            return new ResponseEntity<>("Username already taken", HttpStatus.BAD_REQUEST);
+        }
+        UserEntity user = new UserEntity();
+        user.setUsername(registerDto.getUsername());
+        user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
+
+        Role roles= roleRepository.findByName("MANAGER").get();
+        user.setRoles(Collections.singletonList(roles));
+        userRepository.save(user);
+
+        return new ResponseEntity<>("User registered success with Manager role",
                 HttpStatus.OK);
     }
     @GetMapping("connected/see")

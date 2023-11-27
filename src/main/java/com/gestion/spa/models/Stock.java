@@ -3,6 +3,8 @@ package com.gestion.spa.models;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -24,6 +26,5 @@ public class Stock {
     public List<Item> getItemsList() {
         return itemsList;
     }
-
 
 }
