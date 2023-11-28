@@ -19,6 +19,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -79,14 +80,28 @@ public ResponseEntity<AuthResponseDto> chashierLogin(@RequestBody LoginDto login
 }
 
 @GetMapping("user/get")
-public Boolean getCurrentUser()
+public Object getCurrentUser()
 {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    if(auth.getName() .equals("anonymousUser"))
+    Authentication user = SecurityContextHolder.getContext().getAuthentication();
+    Role cashier=roleRepository.findByName("CASHIER").get();
+    Role employee=roleRepository.findByName("EMPLOYEE").get();
+    Role manager=roleRepository.findByName("MANAGER").get();
+    if(user.getAuthorities().toArray()[0].toString().equals(cashier.getName()))
     {
-        return false;
+        return cashier.getName();
     }
-    return true;
+    else if (user.getAuthorities().toArray()[0].toString().equals(employee.getName()))
+    {
+        return employee.getName();
+    }
+    else if(user.getAuthorities().toArray()[0].toString().equals(manager.getName()))
+    {
+        return manager.getName();
+    }
+    return new UsernameNotFoundException("User Not Found in System, Re-Authenticate please");
+
+
 }
     @GetMapping("users/all")
     public ResponseEntity<String> getAllUsers() throws IOException {
