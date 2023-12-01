@@ -99,7 +99,7 @@ public Object getCurrentUser()
     {
         return manager.getName();
     }
-    return new UsernameNotFoundException("User Not Found in System, Re-Authenticate please");
+    return new ResponseEntity<String>("User Not Authenticated",HttpStatus.BAD_REQUEST);
 
 
 }
