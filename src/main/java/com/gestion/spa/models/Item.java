@@ -33,9 +33,9 @@ public class Item {
     private Stock stock;
     private long stock_id;
 
-    public Item(String name, Category category, String brand, long stock_id, int minQty, LocalDate expiryDate) {
+    public Item(String name, String brand, long stock_id, int minQty, LocalDate expiryDate) {
         this.name = name;
-        this.category = category;
+
         this.brand = brand;
         this.stock_id = stock_id;
         this.minQty=minQty;

@@ -35,7 +35,7 @@ public class ItemController {
 @PostMapping("{s_id}/items/add/{number}")
     public ResponseEntity<String> addItems(@PathVariable long s_id, @PathVariable int number
         , @RequestParam String name, @RequestParam String brand,
-                                           @RequestParam Category category, @RequestParam int minQty, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate expiryDate) {
+                                            @RequestParam int minQty, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate expiryDate) {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     Optional<UserEntity> user = userRepository.findByUsername(auth.getName());
 
@@ -47,7 +47,7 @@ public class ItemController {
             if (stock.isPresent()) {
                 https://wellnessspa237.onrender.com/api/v1/stock/{s_id}/items/add/{number}
                 for (int i = 0; i < number; i++) {
-                    Item item = new Item(name, category, brand, s_id,minQty,expiryDate);
+                    Item item = new Item(name, brand, s_id,minQty,expiryDate);
                     itemRepository.save(item);
                 }
                 return new ResponseEntity<>("Item(s) Added", HttpStatus.OK);
