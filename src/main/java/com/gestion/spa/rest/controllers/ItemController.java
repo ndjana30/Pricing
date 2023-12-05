@@ -45,7 +45,7 @@ public class ItemController {
         {
             Optional<Stock> stock = stockRepository.findById(s_id);
             if (stock.isPresent()) {
-
+                https://wellnessspa237.onrender.com/api/v1/stock/{s_id}/items/add/{number}
                 for (int i = 0; i < number; i++) {
                     Item item = new Item(name, category, brand, s_id,minQty,expiryDate);
                     itemRepository.save(item);

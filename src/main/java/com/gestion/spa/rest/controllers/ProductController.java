@@ -49,8 +49,6 @@ public class ProductController {
             return "user not logged in";
         }
 
-
-
     }
     @GetMapping("all")
     public List<Product> findAllProducts() throws IOException {

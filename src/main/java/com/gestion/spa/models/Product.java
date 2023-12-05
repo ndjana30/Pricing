@@ -32,18 +32,12 @@ public class Product {
     private long client_id;
     private long employee_id;
 
-
     private LocalDate dateTime;
-
-
-
-
 
     @JsonBackReference(value = "product-client")
     public Client getClient() {
         return client;
     }
-
 
     @JsonBackReference(value = "employee-products")
     public UserEntity getEmployee() {
