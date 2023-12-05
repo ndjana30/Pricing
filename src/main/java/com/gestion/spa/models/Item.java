@@ -21,6 +21,7 @@ public class Item {
     @Size(min = 3,message = "item name is too small")
     private String name;
     @Enumerated(EnumType.STRING)
+    @Nullable
     private Category category;
     @Nullable
     private Integer minQty;
