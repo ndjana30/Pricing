@@ -61,7 +61,7 @@ public class ItemController {
     return null;
 }
 
-    @GetMapping("{s_id}/items/all/")
+    @GetMapping("{s_id}/items/all")
     public ResponseEntity<List<Item>> seeItems(@PathVariable long s_id) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Optional<UserEntity> user = userRepository.findByUsername(auth.getName());
