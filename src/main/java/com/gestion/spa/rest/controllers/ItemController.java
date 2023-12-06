@@ -79,6 +79,33 @@ public class ItemController {
 
     }
 
+    @GetMapping("{s_id}/group_item/all")
+    public Object seeGroupItems(@PathVariable long s_id, @RequestParam String name) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Optional<UserEntity> user = userRepository.findByUsername(auth.getName());
+        Optional<Role> role = roleRepository.findByName("MANAGER");
+        List<Item> itemList = new ArrayList<>();
+        for (Role r : user.get().getRoles()) {
+            if (r.getName().equals(role.get().getName()))
+            {
+                Optional<Stock> stock = stockRepository.findById(s_id);
+                if (stock.isPresent()) {
+//                    return new ResponseEntity<>(stock.get().getItemsList(), HttpStatus.OK);
+                    for(Item item : stock.get().getItemsList()) {
+                        if ((item.getName().equals(name))) {
+                            itemList.add(item);
+                        }
+
+                    }
+                    return itemList;
+                }
+                return new ResponseEntity<>("Item with name"+name+"Not found", HttpStatus.BAD_REQUEST);
+            }
+        }
+        return null;
+
+    }
+
     @PostMapping("{s_id}/items/{number}/delete")
     public ResponseEntity<String> deleteItems(@PathVariable long s_id, @PathVariable int number, @RequestParam String name)
     {
