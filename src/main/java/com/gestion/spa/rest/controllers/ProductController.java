@@ -16,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.websocket.RemoteEndpoint;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -59,17 +60,30 @@ public class ProductController {
     @GetMapping("all")
     public List<Product> findAllProducts() throws IOException , GitAPIException {
        Writer writer = new Writer();
-        FileRepositoryBuilder builder = new FileRepositoryBuilder();
+        /*FileRepositoryBuilder builder = new FileRepositoryBuilder();
         Repository repository = builder.setGitDir(new File("C:/Users/godma/Documents/spa/spa/spa/spa"))
                 .readEnvironment() // scan environment GIT_* variables
                 .findGitDir() // scan up the file system tree
                 .build();
-        Git git = new Git(repository);
-        git.add().addFilepattern(".").call();
+        repository.isBare();*/
+
+
+//        Git git = new Git(repository);
+        /*git.add().addFilepattern(".").call();
         git.commit().setMessage("New Commit").call();
         git.push().call();
-
-           writer.writeToCSV(productRepository.findAll(),"products.csv");
+*/
+             writer.writeToCSV(productRepository.findAll(),"products.csv");
+        try {
+            Git g = Git.open(new File("C:/Users/godma/Documents/spa/spa/spa/spa"));
+            g.add().addFilepattern(".").call();
+            g.commit().setMessage("New Commit").call();
+            g.push().call();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
         return productRepository.findAll();
 
     }
