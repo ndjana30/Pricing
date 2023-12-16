@@ -11,6 +11,7 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.transport.CredentialsProvider;
+import org.eclipse.jgit.transport.URIish;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.info.ProjectInfoProperties;
@@ -63,7 +64,7 @@ public class ProductController {
     @GetMapping("all")
     public List<Product> findAllProducts() throws IOException , GitAPIException {
        Writer writer = new Writer();
-        /*FileRepositoryBuilder builder = new FileRepositoryBuilder();
+     /*   FileRepositoryBuilder builder = new FileRepositoryBuilder();
         Repository repository = builder.setGitDir(new File("C:/Users/godma/Documents/spa/spa/spa/spa"))
                 .readEnvironment() // scan environment GIT_* variables
                 .findGitDir() // scan up the file system tree
@@ -71,21 +72,20 @@ public class ProductController {
         repository.isBare();*/
 
 
-//        Git git = new Git(repository);
-        /*git.add().addFilepattern(".").call();
+        /*Git git = new Git(repository);
+        git.add().addFilepattern(".").call();
         git.commit().setMessage("New Commit").call();
-        git.push().call();
-*/
+        git.push().setCredentialsProvider()call();*/
              writer.writeToCSV(productRepository.findAll(),"products.csv");
         try {
-            CredentialsProvider cp = new UsernamePasswordCredentialsProvider("ndjana30","Germanin@ictu20");
+            CredentialsProvider cp = new UsernamePasswordCredentialsProvider("alphadigitalservices237","Germanin@ictu20");
 
 
             Git g = Git.open(new File("C:/Users/godma/Documents/spa/spa/spa/spa"));
             g.add().addFilepattern(".").call();
             g.commit().setMessage("New Commit").call();
             g.push().setCredentialsProvider(cp).call();
-            
+
         }
         catch (Exception e)
         {
