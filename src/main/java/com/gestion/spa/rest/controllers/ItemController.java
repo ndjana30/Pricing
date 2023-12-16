@@ -47,7 +47,7 @@ public class ItemController {
             if (stock.isPresent()) {
 //                https://wellnessspa237.onrender.com/api/v1/stock/{s_id}/items/add/{number}
 
-                    Item item = new Item(name, brand, s_id,minQty,expiryDate);
+                    Item item = new Item(name, brand, s_id,minQty,expiryDate,number);
                     itemRepository.save(item);
 
                 return new ResponseEntity<>("Item Added", HttpStatus.OK);
@@ -125,8 +125,8 @@ public class ItemController {
                     {
                         if(item.getId() == i_id)
                         {
-                            Integer min = item.getMinQty();
-                            item.setMinQty(min-number);
+                            Integer qty = item.getQuantity();
+                            item.setQuantity(qty-number);
                             itemRepository.save(item);
                             return new ResponseEntity<>("Items deleted", HttpStatus.OK);
                         }

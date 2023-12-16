@@ -26,6 +26,8 @@ public class Item {
     @Nullable
     private Integer minQty;
     @Nullable
+    private Integer quantity;
+    @Nullable
     private LocalDate expiryDate;
     @Nullable
     private String brand;
@@ -34,9 +36,9 @@ public class Item {
     private Stock stock;
     private long stock_id;
 
-    public Item(String name, String brand, long stock_id, int minQty, LocalDate expiryDate) {
+    public Item(String name, String brand, long stock_id, int minQty, LocalDate expiryDate, int quantity) {
         this.name = name;
-
+        this.quantity=quantity;
         this.brand = brand;
         this.stock_id = stock_id;
         this.minQty=minQty;
