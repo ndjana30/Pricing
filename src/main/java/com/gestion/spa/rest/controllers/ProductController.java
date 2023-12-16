@@ -5,12 +5,18 @@ import com.gestion.spa.models.UserEntity;
 import com.gestion.spa.repositories.ProductRepository;
 import com.gestion.spa.repositories.UserRepository;
 import com.opencsv.CSVWriter;
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.info.ProjectInfoProperties;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -18,6 +24,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import org.eclipse.jgit.*;
 
 @RestController
 @RequestMapping("api/v1/product")
@@ -51,8 +58,17 @@ public class ProductController {
 
     }
     @GetMapping("all")
-    public List<Product> findAllProducts() throws IOException {
+    public List<Product> findAllProducts() throws IOException , GitAPIException {
        Writer writer = new Writer();
+        FileRepositoryBuilder builder = new FileRepositoryBuilder();
+        Repository repository = builder.setGitDir(new File("C:/Users/godma/Documents/spa/spa/spa/spa"))
+                .readEnvironment() // scan environment GIT_* variables
+                .findGitDir() // scan up the file system tree
+                .build();
+        Git git = new Git(repository);
+        git.add().addFilepattern(".").call();
+        git.commit().setMessage("New Commit").call();
+        git.push().call();
 
            writer.writeToCSV(productRepository.findAll(),"products.csv");
         return productRepository.findAll();
