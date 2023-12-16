@@ -5,6 +5,7 @@ import com.gestion.spa.models.UserEntity;
 import com.gestion.spa.repositories.ProductRepository;
 import com.gestion.spa.repositories.UserRepository;
 import com.opencsv.CSVWriter;
+import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Repository;
@@ -75,6 +76,7 @@ public class ProductController {
 */
              writer.writeToCSV(productRepository.findAll(),"products.csv");
         try {
+
             Git g = Git.open(new File("C:/Users/godma/Documents/spa/spa/spa/spa"));
             g.add().addFilepattern(".").call();
             g.commit().setMessage("New Commit").call();
