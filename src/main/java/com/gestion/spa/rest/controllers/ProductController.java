@@ -64,33 +64,37 @@ public class ProductController {
     @GetMapping("all")
     public List<Product> findAllProducts() throws IOException , GitAPIException {
        Writer writer = new Writer();
-     /*   FileRepositoryBuilder builder = new FileRepositoryBuilder();
-        Repository repository = builder.setGitDir(new File("C:/Users/godma/Documents/spa/spa/spa/spa"))
-                .readEnvironment() // scan environment GIT_* variables
-                .findGitDir() // scan up the file system tree
-                .build();
-        repository.isBare();*/
+//        CredentialsProvider cp = new UsernamePasswordCredentialsProvider("alphadigitalservices237","Germanin@ictu20");
 
-
-        /*Git git = new Git(repository);
-        git.add().addFilepattern(".").call();
-        git.commit().setMessage("New Commit").call();
-        git.push().setCredentialsProvider()call();*/
-             writer.writeToCSV(productRepository.findAll(),"products.csv");
+                 writer.writeToCSV(productRepository.findAll(),"products.csv");
         try {
-            CredentialsProvider cp = new UsernamePasswordCredentialsProvider("alphadigitalservices237","Germanin@ictu20");
+            CredentialsProvider cp = new UsernamePasswordCredentialsProvider("ndjana30","Germanin@ictu20");
 
 
             Git g = Git.open(new File("C:/Users/godma/Documents/spa/spa/spa/spa"));
             g.add().addFilepattern(".").call();
-            g.commit().setMessage("New Commit").call();
+            g.commit().setMessage("New Commit").setCredentialsProvider(cp).call();
             g.push().setCredentialsProvider(cp).call();
 
         }
         catch (Exception e)
         {
             e.printStackTrace();
-        }
+        }/*
+
+            FileRepositoryBuilder builder = new FileRepositoryBuilder();
+        Repository repository = builder.setGitDir(new File("C:/Users/godma/Documents/spa/spa/spa/spa"))
+                .readEnvironment() // scan environment GIT_* variables
+                .findGitDir() // scan up the file system tree
+                .build();
+        repository.isBare();
+
+
+        Git git = new Git(repository);
+        git.add().addFilepattern(".").call();
+        git.commit().setMessage("New Commit").setCredentialsProvider(cp);
+        git.push().setCredentialsProvider(cp).call();*/
+
         return productRepository.findAll();
 
     }
