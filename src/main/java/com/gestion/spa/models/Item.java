@@ -27,6 +27,7 @@ public class Item {
     private Integer minQty;
     @Nullable
     private LocalDate expiryDate;
+    @Nullable
     private String brand;
     @ManyToOne
     @JoinColumn(name = "stock_id",insertable = false,updatable = false)

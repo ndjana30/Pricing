@@ -45,12 +45,12 @@ public class ItemController {
         {
             Optional<Stock> stock = stockRepository.findById(s_id);
             if (stock.isPresent()) {
-                https://wellnessspa237.onrender.com/api/v1/stock/{s_id}/items/add/{number}
-                for (int i = 0; i < number; i++) {
+//                https://wellnessspa237.onrender.com/api/v1/stock/{s_id}/items/add/{number}
+
                     Item item = new Item(name, brand, s_id,minQty,expiryDate);
                     itemRepository.save(item);
-                }
-                return new ResponseEntity<>("Item(s) Added", HttpStatus.OK);
+
+                return new ResponseEntity<>("Item Added", HttpStatus.OK);
             }
             else{
                 return new ResponseEntity<>("Stock is not present", HttpStatus.BAD_REQUEST);
@@ -106,8 +106,9 @@ public class ItemController {
 
     }
 
-    @PostMapping("{s_id}/items/{number}/delete")
-    public ResponseEntity<String> deleteItems(@PathVariable long s_id, @PathVariable int number, @RequestParam String name)
+    @PostMapping("{s_id}/items/{i_id}/{number}/delete")
+    public ResponseEntity<String> deleteItems(@PathVariable long s_id, @PathVariable Integer number, @PathVariable long i_id)
+
     {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Optional<UserEntity> user = userRepository.findByUsername(auth.getName());
@@ -120,23 +121,22 @@ public class ItemController {
                 List<Item> items = new ArrayList<>();
                 if (stock.isPresent())
                 {
-                    for (Item item : stock.get().getItemsList()) {
-                        if (item.getName().equals(name))
+                    for(Item item:stock.get().getItemsList())
+                    {
+                        if(item.getId() == i_id)
                         {
-                            items.add(item);
+                            Integer min = item.getMinQty();
+                            item.setMinQty(min-number);
+                            itemRepository.save(item);
+                            return new ResponseEntity<>("Items deleted", HttpStatus.OK);
                         }
                     }
-                    for (int i = 0; i < number; i++)
-                    {
-                        Item it = items.get(i);
-                        itemRepository.delete(it);
-                    }
-                    return new ResponseEntity<>("Items deleted", HttpStatus.OK);
                 }
-                return new ResponseEntity<>("Stock not Found", HttpStatus.BAD_REQUEST);
-            }
-        }
-            return null;
+                return new ResponseEntity<>("Stock not present",HttpStatus.BAD_REQUEST);
+                }
+            return new ResponseEntity<>("UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
+                }
+        return null;
     }
 
 }
