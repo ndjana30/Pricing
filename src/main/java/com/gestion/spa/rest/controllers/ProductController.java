@@ -67,7 +67,7 @@ public class ProductController {
 //        CredentialsProvider cp = new UsernamePasswordCredentialsProvider("alphadigitalservices237","Germanin@ictu20");
 
                  writer.writeToCSV(productRepository.findAll(),"products.csv");
-        try {
+        /*try {
             CredentialsProvider cp = new UsernamePasswordCredentialsProvider("ndjana30","Germanin@ictu20");
 
 
@@ -80,7 +80,10 @@ public class ProductController {
         catch (Exception e)
         {
             e.printStackTrace();
-        }/*
+        }*/
+
+
+        /*
 
             FileRepositoryBuilder builder = new FileRepositoryBuilder();
         Repository repository = builder.setGitDir(new File("C:/Users/godma/Documents/spa/spa/spa/spa"))
