@@ -10,6 +10,8 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
+import org.eclipse.jgit.transport.CredentialsProvider;
+import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.info.ProjectInfoProperties;
 import org.springframework.security.core.Authentication;
@@ -76,11 +78,14 @@ public class ProductController {
 */
              writer.writeToCSV(productRepository.findAll(),"products.csv");
         try {
+            CredentialsProvider cp = new UsernamePasswordCredentialsProvider("ndjana30","Germanin@ictu20");
+
 
             Git g = Git.open(new File("C:/Users/godma/Documents/spa/spa/spa/spa"));
             g.add().addFilepattern(".").call();
             g.commit().setMessage("New Commit").call();
-            g.push().call();
+            g.push().setCredentialsProvider(cp).call();
+            
         }
         catch (Exception e)
         {
