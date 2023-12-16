@@ -31,6 +31,8 @@ public class Product {
     private Client client;
     private long client_id;
     private long employee_id;
+    @Nullable
+    private String detail;
 
     private LocalDate dateTime;
 

@@ -53,7 +53,6 @@ public class ProductController {
            product.setEmployee_id(id);
            product.setDateTime(LocalDate.now());
            productRepository.save(product);
-
            return product;
         }
         else{
