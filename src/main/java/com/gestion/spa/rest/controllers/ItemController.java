@@ -95,7 +95,6 @@ public class ItemController {
                         if ((item.getName().equals(name))) {
                             itemList.add(item);
                         }
-
                     }
                     return itemList;
                 }
@@ -103,7 +102,6 @@ public class ItemController {
             }
         }
         return null;
-
     }
 
     @PostMapping("{s_id}/items/{i_id}/{number}/delete")
@@ -136,6 +134,39 @@ public class ItemController {
                 }
             return new ResponseEntity<>("UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
                 }
+        return null;
+    }
+
+    @PostMapping("{s_id}/items/{i_id}/{number}/increase")
+    public ResponseEntity<String> increaseItems(@PathVariable long s_id, @PathVariable Integer number, @PathVariable long i_id)
+
+    {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Optional<UserEntity> user = userRepository.findByUsername(auth.getName());
+        Optional<Role> role = roleRepository.findByName("MANAGER");
+        for (Role r : user.get().getRoles())
+        {
+            if (r.getName().equals(role.get().getName()))
+            {
+                Optional<Stock> stock = stockRepository.findById(s_id);
+                List<Item> items = new ArrayList<>();
+                if (stock.isPresent())
+                {
+                    for(Item item:stock.get().getItemsList())
+                    {
+                        if(item.getId() == i_id)
+                        {
+                            Integer qty = item.getQuantity();
+                            item.setQuantity(qty+number);
+                            itemRepository.save(item);
+                            return new ResponseEntity<>("Items increased", HttpStatus.OK);
+                        }
+                    }
+                }
+                return new ResponseEntity<>("Stock not present",HttpStatus.BAD_REQUEST);
+            }
+            return new ResponseEntity<>("UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
+        }
         return null;
     }
 
