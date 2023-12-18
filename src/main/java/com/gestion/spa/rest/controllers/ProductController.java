@@ -15,6 +15,8 @@ import org.eclipse.jgit.transport.URIish;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.info.ProjectInfoProperties;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -59,6 +61,26 @@ public class ProductController {
             return "user not logged in";
         }
 
+    }
+    @GetMapping("employee/get")
+    public Object viewClientProduct()
+    {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Optional<UserEntity> logged_in_user = userRepository.findByUsername(auth.getName());
+        List<Product> products = productRepository.findAll();
+        List<Product> cache = new ArrayList<>();
+        if(logged_in_user.isPresent())
+        {
+            for(Product p : products)
+            {
+                if(p.getEmployee_id() == logged_in_user.get().getId())
+                {
+                 cache.add(p);
+                }
+            }
+            return new ResponseEntity<List<Product>>(cache, HttpStatus.OK);
+        }
+        return new ResponseEntity<>("UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
     }
     @GetMapping("all")
     public List<Product> findAllProducts() throws IOException , GitAPIException {
