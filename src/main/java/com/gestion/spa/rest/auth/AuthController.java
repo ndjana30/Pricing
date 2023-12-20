@@ -87,6 +87,7 @@ public Object getCurrentUser()
     Role cashier=roleRepository.findByName("CASHIER").get();
     Role employee=roleRepository.findByName("EMPLOYEE").get();
     Role manager=roleRepository.findByName("MANAGER").get();
+    Role admin=roleRepository.findByName("ADMIN").get();
     if(user.getAuthorities().toArray()[0].toString().equals(cashier.getName()))
     {
         return cashier.getName();
@@ -98,6 +99,11 @@ public Object getCurrentUser()
     else if(user.getAuthorities().toArray()[0].toString().equals(manager.getName()))
     {
         return manager.getName();
+    }
+
+    else if(user.getAuthorities().toArray()[0].toString().equals(admin.getName()))
+    {
+        return admin.getName();
     }
     return new ResponseEntity<String>("User Not Authenticated",HttpStatus.BAD_REQUEST);
 
