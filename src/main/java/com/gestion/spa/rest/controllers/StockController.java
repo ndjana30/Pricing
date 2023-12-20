@@ -32,9 +32,10 @@ public class StockController {
     public ResponseEntity<String> AddStock(@RequestParam String name) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Optional<UserEntity> user = userRepository.findByUsername(auth.getName());
+        Optional<Role> admin_role = roleRepository.findByName("ADMIN");
         Optional<Role> role = roleRepository.findByName("MANAGER");
         for (Role r : user.get().getRoles()) {
-            if (r.getName().equals(role.get().getName())) {
+            if (r.getName().equals(role.get().getName()) || r.getName().equals(admin_role.get().getName())) {
                 Stock stock = new Stock();
                 stock.setName(name);
                 stockRepository.save(stock);
@@ -50,9 +51,10 @@ public class StockController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Optional<UserEntity> user = userRepository.findByUsername(auth.getName());
         Optional<Role> role = roleRepository.findByName("MANAGER");
+        Optional<Role> admin_role = roleRepository.findByName("ADMIN");
         for(Role r : user.get().getRoles())
         {
-            if(r.getName().equals(role.get().getName()))
+            if(r.getName().equals(role.get().getName()) || r.getName().equals(admin_role.get().getName()))
             {
                 return new ResponseEntity<>(stockRepository.findAll(), HttpStatus.OK);
             }
@@ -67,10 +69,11 @@ public class StockController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Optional<UserEntity> user = userRepository.findByUsername(auth.getName());
         Optional<Role> role = roleRepository.findByName("MANAGER");
+        Optional<Role> admin_role = roleRepository.findByName("ADMIN");
         Optional<Stock> stock = stockRepository.findById(id);
         for(Role r : user.get().getRoles())
         {
-            if(r.getName().equals(role.get().getName()))
+            if(r.getName().equals(role.get().getName()) || r.getName().equals(admin_role.get().getName()))
             {
                 if(stock.isPresent())
                 {

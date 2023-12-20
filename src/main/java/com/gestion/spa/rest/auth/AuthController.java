@@ -168,6 +168,25 @@ public Object getCurrentUser()
         return new ResponseEntity<>("User registered success with Manager role",
                 HttpStatus.OK);
     }
+
+    @PostMapping("admin/register")
+    public ResponseEntity<String> madminRegister(@RequestBody RegisterDto registerDto)
+    {
+        if(userRepository.existsByUsername(registerDto.getUsername()))
+        {
+            return new ResponseEntity<>("Username already taken", HttpStatus.BAD_REQUEST);
+        }
+        UserEntity user = new UserEntity();
+        user.setUsername(registerDto.getUsername());
+        user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
+
+        Role roles= roleRepository.findByName("ADMIN").get();
+        user.setRoles(Collections.singletonList(roles));
+        userRepository.save(user);
+
+        return new ResponseEntity<>("User registered success with Admin role",
+                HttpStatus.OK);
+    }
     @GetMapping("connected/see")
     public String seeUser()
     {

@@ -40,8 +40,9 @@ public class ItemController {
     Optional<UserEntity> user = userRepository.findByUsername(auth.getName());
 
     Optional<Role> role = roleRepository.findByName("MANAGER");
+    Optional<Role> admin_role = roleRepository.findByName("ADMIN");
     for (Role r : user.get().getRoles()) {
-        if (r.getName().equals(role.get().getName()))
+        if (r.getName().equals(role.get().getName()) || r.getName().equals(admin_role.get().getName()))
         {
             Optional<Stock> stock = stockRepository.findById(s_id);
             if (stock.isPresent()) {
@@ -66,8 +67,9 @@ public class ItemController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Optional<UserEntity> user = userRepository.findByUsername(auth.getName());
         Optional<Role> role = roleRepository.findByName("MANAGER");
+        Optional<Role> admin_role = roleRepository.findByName("ADMIN");
         for (Role r : user.get().getRoles()) {
-            if (r.getName().equals(role.get().getName())) {
+            if (r.getName().equals(role.get().getName()) || r.getName().equals(admin_role.get().getName())) {
                 Optional<Stock> stock = stockRepository.findById(s_id);
                 if (stock.isPresent()) {
                     return new ResponseEntity<>(stock.get().getItemsList(), HttpStatus.OK);
@@ -84,9 +86,10 @@ public class ItemController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Optional<UserEntity> user = userRepository.findByUsername(auth.getName());
         Optional<Role> role = roleRepository.findByName("MANAGER");
+        Optional<Role> admin_role = roleRepository.findByName("ADMIN");
         List<Item> itemList = new ArrayList<>();
         for (Role r : user.get().getRoles()) {
-            if (r.getName().equals(role.get().getName()))
+            if (r.getName().equals(role.get().getName()) || r.getName().equals(admin_role.get().getName()))
             {
                 Optional<Stock> stock = stockRepository.findById(s_id);
                 if (stock.isPresent()) {
@@ -111,9 +114,10 @@ public class ItemController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Optional<UserEntity> user = userRepository.findByUsername(auth.getName());
         Optional<Role> role = roleRepository.findByName("MANAGER");
+        Optional<Role> admin_role = roleRepository.findByName("ADMIN");
         for (Role r : user.get().getRoles())
         {
-            if (r.getName().equals(role.get().getName()))
+            if (r.getName().equals(role.get().getName()) || r.getName().equals(admin_role.get().getName()))
             {
                 Optional<Stock> stock = stockRepository.findById(s_id);
                 List<Item> items = new ArrayList<>();
@@ -144,9 +148,10 @@ public class ItemController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Optional<UserEntity> user = userRepository.findByUsername(auth.getName());
         Optional<Role> role = roleRepository.findByName("MANAGER");
+        Optional<Role> admin_role = roleRepository.findByName("ADMIN");
         for (Role r : user.get().getRoles())
         {
-            if (r.getName().equals(role.get().getName()))
+            if (r.getName().equals(role.get().getName()) || r.getName().equals(admin_role.get().getName()))
             {
                 Optional<Stock> stock = stockRepository.findById(s_id);
                 List<Item> items = new ArrayList<>();
