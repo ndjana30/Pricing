@@ -110,11 +110,11 @@ public Object getCurrentUser()
 
 }
     @GetMapping("users/all")
-    public ResponseEntity<String> getAllUsers() throws IOException {
+    public ResponseEntity<Object> getAllUsers() throws IOException {
         List<UserEntity> users = userRepository.findAll();
         UserWriter writer=new UserWriter();
         writer.ExportUsers(users,"users.csv");
-        return new ResponseEntity<>("ALL USERS FOUND AND ADDED IN CSV FILE",HttpStatus.OK);
+        return new ResponseEntity<>(users,HttpStatus.OK);
     }
     @GetMapping("clients/see/all")
     public ResponseEntity<List<Client>> seeAllClients() throws IOException {
