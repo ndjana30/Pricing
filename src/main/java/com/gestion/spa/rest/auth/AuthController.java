@@ -19,6 +19,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -210,6 +211,20 @@ public Object getCurrentUser()
            return new ResponseEntity<>("User deleted",HttpStatus.OK);
        }
         return new ResponseEntity<>("User not found",HttpStatus.BAD_REQUEST);
+    }
+    @PutMapping("/employee/{id}/update")
+    public ResponseEntity<Object> updateEmployee(@PathVariable long id, @RequestBody UserEntity user)
+    {
+        
+        Optional<UserEntity> user1 = userRepository.findById(id);
+        if(user1.isPresent())
+        {
+            user1.get().setUsername(user.getUsername());
+            user1.get().setPassword(user.getPassword());
+            userRepository.save(user1.get());
+            return new ResponseEntity<>("User modified", HttpStatus.ACCEPTED);
+        }
+        return new ResponseEntity<>("User not found", HttpStatus.BAD_REQUEST);
     }
 
 
