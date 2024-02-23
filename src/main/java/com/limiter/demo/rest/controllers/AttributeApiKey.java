@@ -39,4 +39,25 @@ public class AttributeApiKey {
         }
         return new ResponseEntity<>("You need to login", HttpStatus.BAD_REQUEST);
     }
+
+    @GetMapping("key/pro")
+    public Object attributeProKey()
+    {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Optional<UserEntity> user = userRepository.findByUsername(authentication.getName());
+        String basic_prefix = "PX001-";
+        String generated = new Random().ints(97,122+1)
+                .limit(20).toString();
+        String api_key = basic_prefix+ String.valueOf(generated);
+
+        if(user.isPresent())
+        {
+            user.get().setApiKey(api_key);
+            userRepository.save(user.get());
+            return new ResponseEntity<>("API KEY BOUGHT for" +user.get().getUsername(), HttpStatus.OK);
+
+        }
+        return new ResponseEntity<>("You need to login", HttpStatus.BAD_REQUEST);
+    }
+
 }
